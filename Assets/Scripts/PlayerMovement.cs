@@ -8,16 +8,17 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 1f;
     [SerializeField] private float jumpForce = 1f;
-    [SerializeField] private float attackCooldown = 0;
 
     private float horizontalInput;
     private Rigidbody2D rb;
 
-    public bool isGrounded = true;
+    public LayerMask groundLayer;
+    public Vector2 boxSize;
+    
     public bool isJumping;
     public bool isWalking;
-    public bool isAttacking;
 
+    public float castDistance;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
     {
         JumpInputCheck();
         CheckWalking();
-        AttackCheck();
     }
 
     void FixedUpdate()
@@ -69,30 +69,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpInputCheck()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
         {
             isJumping = true;
-            isGrounded = false;
         }
 
     }
 
-    private void AttackCheck()
+    public bool isGrounded()
     {
-        if (Input.GetKeyDown(KeyCode.X) && attackCooldown <= 0 && isGrounded)
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayer))
         {
-            isAttacking = true;
-            attackCooldown = 0.4f;
-
-            StartCoroutine("AttackCooldown");
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-    private IEnumerator AttackCooldown()
+    private void OnDrawGizmos()
     {
-        yield return new WaitForSeconds(attackCooldown);
-
-        attackCooldown = 0;
-        isAttacking = false;
+        Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
     }
 }

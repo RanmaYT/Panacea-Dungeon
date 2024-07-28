@@ -7,6 +7,9 @@ public class PlayerCollision : MonoBehaviour
     private PlayerMovement playerMoves;
     private PlayerHealth playerHealth;
 
+    float damageCooldown = 0;
+    float timeNextDamage = 1f;
+
     private void Awake()
     {
         playerMoves = GetComponent<PlayerMovement>();
@@ -15,9 +18,19 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            playerMoves.isGrounded = true;
+            playerHealth.health--;
+            damageCooldown = Time.time + timeNextDamage;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy") && Time.time >= damageCooldown)
+        {
+            playerHealth.health--;
+            damageCooldown = Time.time + timeNextDamage;
         }
     }
 
@@ -25,7 +38,7 @@ public class PlayerCollision : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Trap"))
         {
-            playerHealth.health--;
+            playerHealth.health = 0;
         }
     }
 }

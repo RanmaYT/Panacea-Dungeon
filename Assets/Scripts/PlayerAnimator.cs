@@ -5,29 +5,36 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    private Animator playerAnim;
-    private SpriteRenderer playerSR;
     private PlayerMovement playerMoves;
     private PlayerHealth playerHealth;
+    private PlayerAttack playerAttack;
+
+    private Animator playerAnim;
+    private Rigidbody2D playerRb;
+    private SpriteRenderer playerSR;
 
     private float horizontalInput;
+    private bool isFalling;
+    private bool facingRight = true;
 
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = GetComponent<PlayerHealth>();
         playerMoves = GetComponent<PlayerMovement>();
+        playerAttack = GetComponent<PlayerAttack>();
+
         playerAnim = GetComponent<Animator>();
         playerSR = GetComponent<SpriteRenderer>();
+        playerRb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerAnim.SetBool("isGrounded", playerMoves.isGrounded);
-        playerAnim.SetBool("isWalking", playerMoves.isWalking);
-        playerAnim.SetBool("isAttacking", playerMoves.isAttacking);
-        playerAnim.SetInteger("health", playerHealth.health);
+        FallingChecking();
+
+        AnimatorSetting();
         
         Flip();
     }
@@ -40,13 +47,53 @@ public class PlayerAnimator : MonoBehaviour
         {
             if(horizontalInput == 1)
             {
-                playerSR.flipX = false;
+                if(!facingRight)
+                {
+                    transform.Rotate(0, 180, 0);
+                    facingRight = true;
+                }
+
             }
             
             if(horizontalInput == -1)
             {
-                playerSR.flipX = true;
+                if (facingRight)
+                {
+                    transform.Rotate(0, 180, 0);
+                    facingRight = false;
+                }
+
             }
+        }
+    }
+
+    private void AnimatorSetting()
+    {
+        playerAnim.SetBool("isJumping", playerMoves.isJumping);
+        playerAnim.SetBool("isWalking", playerMoves.isWalking);
+
+        playerAnim.SetBool("isFalling", isFalling);
+        playerAnim.SetBool("isAttacking", playerAttack.isAttacking);
+
+        if(playerAttack.isAttacking)
+        {
+        }
+
+        if(playerHealth.health <= 0)
+        {
+            playerAnim.SetBool("isDead", true);
+        }
+    }
+
+    private void FallingChecking()
+    {
+        if(playerRb.velocity.y < -1)
+        {
+            isFalling = true;
+        }
+        else
+        {
+            isFalling = false;
         }
     }
 }
