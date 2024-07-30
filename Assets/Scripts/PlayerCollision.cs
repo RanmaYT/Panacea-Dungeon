@@ -1,35 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerCollision : MonoBehaviour
 {
-    private PlayerMovement playerMoves;
+    [SerializeField] HealthBar healthBar;
+    [SerializeField] AudioSource hitSound;
+
     private PlayerHealth playerHealth;
 
     float damageCooldown = 0;
-    float timeNextDamage = 1f;
+    float timeNextDamage = 2f;
 
     private void Awake()
     {
-        playerMoves = GetComponent<PlayerMovement>();
         playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("ShadowSlime") || collision.gameObject.CompareTag("Slime"))
         {
             playerHealth.health--;
+            hitSound.Play();
+            healthBar.SetHealth(playerHealth.health);
+
             damageCooldown = Time.time + timeNextDamage;
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && Time.time >= damageCooldown)
+        if ((collision.gameObject.CompareTag("ShadowSlime") || collision.gameObject.CompareTag("Slime")) && Time.time >= damageCooldown)
         {
             playerHealth.health--;
+            hitSound.Play();
+            healthBar.SetHealth(playerHealth.health);
             damageCooldown = Time.time + timeNextDamage;
         }
     }
@@ -39,6 +46,7 @@ public class PlayerCollision : MonoBehaviour
         if(collision.gameObject.CompareTag("Trap"))
         {
             playerHealth.health = 0;
+            healthBar.SetHealth(playerHealth.health);
         }
     }
 }

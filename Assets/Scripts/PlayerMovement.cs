@@ -9,6 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 1f;
     [SerializeField] private float jumpForce = 1f;
 
+    [SerializeField] AudioSource walkSound;
+    [SerializeField] AudioSource jumpSound;
+
+    private bool isPlaying;
     private float horizontalInput;
     private Rigidbody2D rb;
 
@@ -31,6 +35,20 @@ public class PlayerMovement : MonoBehaviour
     {
         JumpInputCheck();
         CheckWalking();
+
+        if(isGrounded() && isWalking)
+        {
+            if(!isPlaying)
+            {
+                isPlaying = true;
+                walkSound.Play();
+            }
+        }
+        else
+        {
+            isPlaying = false;
+            walkSound.Stop();
+        }
     }
 
     void FixedUpdate()
@@ -52,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isJumping = false;
+
         }
     }
 
@@ -72,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
         {
             isJumping = true;
+            jumpSound.Play();
         }
 
     }

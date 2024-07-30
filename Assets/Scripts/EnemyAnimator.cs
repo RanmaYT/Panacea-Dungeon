@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyAnimator : MonoBehaviour
 {
     [SerializeField] EnemyCollision enemyCol;
+    [SerializeField] EnemyHealth enemyhealth;
     [SerializeField] SpriteRenderer enemySR;
     [SerializeField] Animator enemyAnim;
 
@@ -21,7 +22,9 @@ public class EnemyAnimator : MonoBehaviour
     void Update()
     {
         enemyAnim.SetBool("AfterPlayer", enemyCol.afterPlayer);
-        if(target != null)
+        enemyAnim.SetBool("isDead", enemyhealth.isDead);
+
+        if(target != null && !enemyhealth.isDead)
         {
             Flip();
         }

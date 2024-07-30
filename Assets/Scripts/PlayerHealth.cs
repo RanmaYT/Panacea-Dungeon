@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [SerializeField] HealthBar healthBar;
+    
+    public int maxHealth = 10;
     public int health;
 
     private void Start()
     {
-        health = 5;
+        health = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame

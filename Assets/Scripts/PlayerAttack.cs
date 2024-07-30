@@ -5,9 +5,14 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private PlayerMovement playerMoves;
+    [SerializeField] EtherBar etherBar;
+    [SerializeField] ShadowEtherBar shadowEtherBar;
 
-    private float hInput;
+    [SerializeField] AudioSource slashAudio;
+
+    private PlayerMovement playerMoves;
+    private PlayerPoints playerPoints;
+
     private float nextAttackTime = 0;
     private float attackRate = 2f;
 
@@ -22,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
         playerMoves = GetComponent<PlayerMovement>();
+        playerPoints = GetComponent<PlayerPoints>();
     }
 
     // Update is called once per frame
@@ -39,6 +45,8 @@ public class PlayerAttack : MonoBehaviour
         {
             isAttacking = false;
         }
+
+        
     }
 
     void Attack()
@@ -49,8 +57,21 @@ public class PlayerAttack : MonoBehaviour
 
         foreach(Collider2D enemy in enemiesHit)
         {
-            Debug.Log("o Ataque ocorreu");
             enemy.GetComponent<EnemyHealth>().TakeDamage(damageAmount);
+
+            slashAudio.Play();
+
+            if (enemy.CompareTag("Slime"))
+            {
+                playerPoints.etherCount++;
+                etherBar.SetEther(playerPoints.etherCount);
+            }
+            else if (enemy.CompareTag("ShadowSlime"))
+            {
+                playerPoints.shadowEtherCount++;
+                shadowEtherBar.SetShadowEther(playerPoints.shadowEtherCount);
+            }
+
         }
     }
 

@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 7337656868382947196}
   m_Layer: 7
   m_Name: Slime
-  m_TagString: Enemy
+  m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -244,6 +244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyCol: {fileID: 6547556251206143345}
   enemyHealth: {fileID: 7337656868382947196}
+  playerHealth: {fileID: 4344763585457622700, guid: f27b5c708d3a4a0478079807603feddc, type: 3}
 --- !u!114 &1875250313840803336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyCol: {fileID: 6547556251206143345}
+  enemyhealth: {fileID: 7337656868382947196}
   enemySR: {fileID: 3651377776457508235}
   enemyAnim: {fileID: 6963851823268927219}
 --- !u!114 &6547556251206143345
@@ -284,5 +286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abf55a488042b084cb9c7093665b61ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPoints: {fileID: 3938740211461487437, guid: f27b5c708d3a4a0478079807603feddc, type: 3}
   maxHealth: 10
   currentHealth: 0
+  pointValue: 1
+  isDead: 0

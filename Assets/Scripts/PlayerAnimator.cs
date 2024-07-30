@@ -8,10 +8,10 @@ public class PlayerAnimator : MonoBehaviour
     private PlayerMovement playerMoves;
     private PlayerHealth playerHealth;
     private PlayerAttack playerAttack;
+    private PlayerCollision playerCol;
 
     private Animator playerAnim;
     private Rigidbody2D playerRb;
-    private SpriteRenderer playerSR;
 
     private float horizontalInput;
     private bool isFalling;
@@ -23,9 +23,9 @@ public class PlayerAnimator : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
         playerMoves = GetComponent<PlayerMovement>();
         playerAttack = GetComponent<PlayerAttack>();
+        playerCol = GetComponent<PlayerCollision>();
 
         playerAnim = GetComponent<Animator>();
-        playerSR = GetComponent<SpriteRenderer>();
         playerRb = GetComponent<Rigidbody2D>();
     }
 
@@ -74,10 +74,6 @@ public class PlayerAnimator : MonoBehaviour
 
         playerAnim.SetBool("isFalling", isFalling);
         playerAnim.SetBool("isAttacking", playerAttack.isAttacking);
-
-        if(playerAttack.isAttacking)
-        {
-        }
 
         if(playerHealth.health <= 0)
         {
