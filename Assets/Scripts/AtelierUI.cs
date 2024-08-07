@@ -13,10 +13,11 @@ public class AtelierUI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if(playerPoints.etherCount == 10 && playerPoints.shadowEtherCount == 20)
+       if(playerPoints.etherCount == 10 && playerPoints.shadowEtherCount == 20 && !gameWon)
         {
             atelierText.SetText("Thank you, I'll do the Panacea right away");
             gameWon = true;
+
         }
        else
         {

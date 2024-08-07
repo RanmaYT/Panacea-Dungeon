@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 1f;
     [SerializeField] private float jumpForce = 1f;
 
+    [SerializeField] GameManager manager;
     [SerializeField] AudioSource walkSound;
     [SerializeField] AudioSource jumpSound;
 
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
         JumpInputCheck();
         CheckWalking();
 
-        if(isGrounded() && isWalking)
+        if(isGrounded() && isWalking && !manager.gameOver)
         {
             if(!isPlaying)
             {

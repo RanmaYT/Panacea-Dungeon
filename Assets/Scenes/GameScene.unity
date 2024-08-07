@@ -56079,6 +56079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpForce: 7
+  manager: {fileID: 1622649870}
   walkSound: {fileID: 9089068144500934535}
   jumpSound: {fileID: 9089068144500934536}
   groundLayer:
